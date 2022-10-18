@@ -23,20 +23,20 @@ class ViewController: UIViewController {
     }
     
     var currentGame: Game!
-
-    func newRound() {
-        let newWord = listOfWords.removeFirst()
-        currentGame = Game(word: newWord, incorrectMovesRemaining:
-        incorrectMovesAllowed)
-
-     }
     
     func updateUI() {
         scoreLabel.text = "Wins: \(totalWins), Losses: \(totalLosses)"
-        treeImageView.image = UIImage(named: "Tree  \(currentGame.incorrectMovesRemaining)")
+        treeImageView.image = UIImage(named: "Tree \(currentGame.incorrectMovesRemaining)")
     }
+    
 
-
+    
+    func newRound() {
+        let newWord = listOfWords.removeFirst()
+        currentGame = Game(word: newWord, incorrectMovesRemaining: incorrectMovesAllowed, guessedLetters: [])
+        updateUI()
+     }
+    
     
     @IBOutlet var treeImageView: UIImageView!
     @IBOutlet var correctWordLabel: UILabel!
@@ -45,6 +45,10 @@ class ViewController: UIViewController {
     
     @IBAction func buttonPressed(_ sender: UIButton) {
         sender.isEnabled = false
+       let letterString = sender.title(for: .normal)!
+       let letter = Character(letterString.lowercased())
+       currentGame.playerGuessed(letter: letter)
+        updateUI()
     }
 }
 
